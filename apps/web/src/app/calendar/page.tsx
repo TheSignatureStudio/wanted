@@ -5,8 +5,8 @@ import { Calendar } from '@/components/calendar';
 import { useQuery } from '@tanstack/react-query';
 
 export default function CalendarPage() {
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const selectedYear = new Date().getFullYear();
+  const selectedMonth = new Date().getMonth() + 1;
   
   // Mock user ID - in production, this would come from auth
   const userId = 'demo-user-123';
