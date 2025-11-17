@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "dev:web": "npm run dev --workspace @wanted/web",
-    "build:web": "npm run build:cf --workspace @wanted/web",
+    "build:web": "cd apps/web && npm ci && npx @cloudflare/next-on-pages && rm -rf node_modules",
     "dev:mobile": "npm run start --workspace @wanted/mobile",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
