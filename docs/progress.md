@@ -12,4 +12,5 @@
 - 웹 홈 화면 내비게이션/로드맵/리소스 섹션 확장 및 접근성(스킵 링크, ARIA) 반영
 - Cloudflare Worker에 라우터/엔드포인트 구조(`health`, `rooms`, `work-locations`, `remote-schedules`)와 D1 스키마 초안 추가
 - Expo 앱 홈/가이드 탭을 브랜드 톤으로 재구성하고 GPS/회의실/52시간 시나리오를 반영
+- Cloudflare Pages 빌드를 위해 `next-on-pages` 기반 스크립트(`npm run build:web`)와 `.vercel/output` 구조 정비, `docs/deploy.md` 작성
 

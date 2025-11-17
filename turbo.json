@@ -4,6 +4,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [
+        "apps/web/.vercel/output/**",
         "apps/web/.next/**",
         "apps/mobile/dist/**",
         "apps/worker/dist/**"

@@ -15,4 +15,5 @@ coverage/
 tmp/
 temp/
 .wrangler/
+.vercel/
 

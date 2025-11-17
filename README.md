@@ -23,6 +23,7 @@
 
 - `docs/requirements.md`: 기능 요구사항, 사용자 역할, 규정 로직 요약
 - `docs/progress.md`: 작업 세션별 진행 로그
+- `docs/deploy.md`: Cloudflare Pages/Workers 배포 가이드
 
 ## 모노레포 구성
 
@@ -49,4 +50,14 @@ npm run dev:mobile
 # Cloudflare Worker 로컬
 npm run dev --workspace @wanted/worker
 ```
+
+## Cloudflare Pages 배포 요약
+
+- **Root Directory**: `apps/web`
+- **Build Command**: `npm run build:web` (Next.js 빌드 → `@cloudflare/next-on-pages --skip-build`)
+- **Output**: `.vercel/output/static`
+- **Functions**: `.vercel/output/functions`
+- **Node 버전**: 18.18 이상 권장
+
+상세한 단계는 `docs/deploy.md`를 참고하세요.
 
