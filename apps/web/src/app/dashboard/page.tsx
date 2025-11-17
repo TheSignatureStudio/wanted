@@ -25,54 +25,39 @@ export default function DashboardPage() {
     <>
       <NotificationBanner userId={userId} />
       
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Wanted Attendance</h1>
-              <p className="text-sm text-gray-600">근태 관리 시스템</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-gray-600">데모 사용자</p>
-              <p className="text-xs text-gray-500">{userId}</p>
-            </div>
-          </div>
+      <div className="page-container">
+        <div className="page-header">
+          <h1>출퇴근 관리</h1>
+          <p className="page-description">출퇴근을 기록하고 주간 근무시간을 확인하세요</p>
         </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="dashboard-grid">
           {/* Left Column - Attendance Check */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow p-6">
-              <AttendanceCheck userId={userId} />
-            </div>
+          <div className="dashboard-main">
+            <AttendanceCheck userId={userId} />
           </div>
 
           {/* Right Column - Stats */}
-          <div className="space-y-6">
+          <div className="dashboard-sidebar">
             {/* Weekly Hours Card */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">이번 주 근무시간</h3>
+            <div className="stats-card">
+              <h3>이번 주 근무시간</h3>
               
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-600">진행률</span>
-                  <span className="font-medium">
+              <div className="progress-section">
+                <div className="progress-header">
+                  <span>진행률</span>
+                  <span className="progress-value">
                     {totalHours}시간 {totalMinutes}분 / {weeklyLimit}시간
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="progress-bar">
                   <div
-                    className={`h-2 rounded-full transition-all ${
+                    className={`progress-fill ${
                       usagePercent > 100
-                        ? 'bg-red-500'
+                        ? 'exceeded'
                         : usagePercent > 80
-                        ? 'bg-yellow-500'
-                        : 'bg-green-500'
+                        ? 'warning'
+                        : 'normal'
                     }`}
                     style={{ width: `${Math.min(usagePercent, 100)}%` }}
                   />
@@ -80,66 +65,65 @@ export default function DashboardPage() {
               </div>
 
               {summary?.summary.exceeds_limit === 1 && (
-                <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">
-                  <p className="font-medium">⚠️ 주 52시간 초과</p>
+                <div className="alert alert-danger">
+                  <p><strong>⚠️ 주 52시간 초과</strong></p>
                   <p>초과 근무: {overtimeHours}시간</p>
                 </div>
               )}
 
               {usagePercent > 80 && usagePercent <= 100 && (
-                <div className="p-3 bg-yellow-50 text-yellow-700 rounded-lg text-sm">
-                  <p className="font-medium">⚠️ 근무시간 주의</p>
+                <div className="alert alert-warning">
+                  <p><strong>⚠️ 근무시간 주의</strong></p>
                   <p>주 52시간 제한에 근접하고 있습니다</p>
                 </div>
               )}
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">빠른 통계</h3>
+            <div className="stats-card">
+              <h3>빠른 통계</h3>
               
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-gray-600">이번 달 근무일</p>
-                  <p className="text-2xl font-bold">-</p>
+              <div className="quick-stats">
+                <div className="stat-item">
+                  <span className="stat-label">이번 달 근무일</span>
+                  <span className="stat-value">-</span>
                 </div>
                 
-                <div>
-                  <p className="text-sm text-gray-600">남은 연차</p>
-                  <p className="text-2xl font-bold">-</p>
+                <div className="stat-item">
+                  <span className="stat-label">남은 연차</span>
+                  <span className="stat-value">-</span>
                 </div>
                 
-                <div>
-                  <p className="text-sm text-gray-600">승인 대기 중</p>
-                  <p className="text-2xl font-bold">-</p>
+                <div className="stat-item">
+                  <span className="stat-label">승인 대기 중</span>
+                  <span className="stat-value">-</span>
                 </div>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">바로가기</h3>
+            <div className="stats-card">
+              <h3>바로가기</h3>
               
-              <div className="space-y-2">
-                <button className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
-                  <p className="font-medium">재택 신청</p>
-                  <p className="text-xs text-gray-600">원격 근무 일정 등록</p>
+              <div className="quick-actions">
+                <button className="action-button">
+                  <strong>재택 신청</strong>
+                  <span>원격 근무 일정 등록</span>
                 </button>
                 
-                <button className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
-                  <p className="font-medium">휴가 신청</p>
-                  <p className="text-xs text-gray-600">연차 사용 신청</p>
+                <button className="action-button">
+                  <strong>휴가 신청</strong>
+                  <span>연차 사용 신청</span>
                 </button>
                 
-                <button className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
-                  <p className="font-medium">회의실 예약</p>
-                  <p className="text-xs text-gray-600">회의 공간 예약</p>
+                <button className="action-button">
+                  <strong>회의실 예약</strong>
+                  <span>회의 공간 예약</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </main>
       </div>
     </>
   );
