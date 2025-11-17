@@ -16,6 +16,7 @@
 - Next.js(App Router) 웹 앱, Expo 기반 모바일 앱, Cloudflare Worker(API) 스캐폴딩
 - 단일 CSS 전략을 반영한 웹 홈 화면 메시지 업데이트
 - 접근성 요소(스킵 링크, ARIA)와 로드맵/리소스 섹션을 포함한 UX 확장
+- Cloudflare Worker 라우팅(`health`, `rooms`, `work-locations`, `remote-schedules`) 및 D1 스키마 초안
 
 ## 문서
 
