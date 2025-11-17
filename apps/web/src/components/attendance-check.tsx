@@ -13,8 +13,15 @@ interface AttendanceCheckProps {
 export function AttendanceCheck({ userId }: AttendanceCheckProps) {
   const [location, setLocation] = useState<GeoLocation | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
-  const [selectedWorkMode, setSelectedWorkMode] = useState<WorkMode>('ONSITE');
   const [selectedLocation, setSelectedLocation] = useState<WorkLocation | null>(null);
+
+  // Mock today's work schedule - in production, this would come from API
+  const todaySchedule = {
+    work_mode: 'ONSITE' as WorkMode,
+    start_time: '09:00',
+    end_time: '18:00',
+    location: '본사',
+  };
 
   // Mock work locations - in production, this would come from API
   const workLocations: WorkLocation[] = [
@@ -31,9 +38,9 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
     },
   ];
 
-  // Get current location on mount
+  // Get current location on mount if ONSITE
   useEffect(() => {
-    if (selectedWorkMode === 'ONSITE') {
+    if (todaySchedule.work_mode === 'ONSITE') {
       getCurrentLocation()
         .then((loc) => {
           setLocation(loc);
@@ -43,7 +50,7 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
           setLocationError(error.message);
         });
     }
-  }, [selectedWorkMode]);
+  }, [todaySchedule.work_mode]);
 
   // Check today's attendance
   const { data: todayAttendance, refetch: refetchAttendance } = useQuery({
@@ -62,13 +69,13 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
   // Clock in mutation
   const clockInMutation = useMutation({
     mutationFn: async () => {
-      if (selectedWorkMode === 'ONSITE' && !location) {
+      if (todaySchedule.work_mode === 'ONSITE' && !location) {
         throw new Error('위치 정보를 가져오는 중입니다...');
       }
 
       return api.clockIn({
         user_id: userId,
-        work_mode: selectedWorkMode,
+        work_mode: todaySchedule.work_mode,
         location_id: selectedLocation?.id,
         latitude: location?.latitude,
         longitude: location?.longitude,
@@ -114,6 +121,35 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
     <div className="attendance-check">
       <h2>출퇴근 체크</h2>
 
+      {/* Today's Schedule */}
+      <div className="today-schedule">
+        <h3>오늘의 근무</h3>
+        <div className="schedule-info">
+          <div className="schedule-item">
+            <span className="schedule-label">근무 형태</span>
+            <span className={`work-mode-badge ${todaySchedule.work_mode.toLowerCase()}`}>
+              {todaySchedule.work_mode === 'ONSITE'
+                ? '현장근무'
+                : todaySchedule.work_mode === 'REMOTE'
+                ? '재택근무'
+                : '외근'}
+            </span>
+          </div>
+          <div className="schedule-item">
+            <span className="schedule-label">근무 시간</span>
+            <span className="schedule-value">
+              {todaySchedule.start_time} ~ {todaySchedule.end_time}
+            </span>
+          </div>
+          {todaySchedule.work_mode === 'ONSITE' && (
+            <div className="schedule-item">
+              <span className="schedule-label">근무지</span>
+              <span className="schedule-value">{todaySchedule.location}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Current Status */}
       {todayAttendance && (
         <div className="attendance-status">
@@ -151,26 +187,8 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
         </div>
       )}
 
-      {/* Work Mode Selection */}
-      {!isClockedIn && (
-        <div className="form-group">
-          <label>근무 형태</label>
-          <div className="work-mode-selector">
-            {(['ONSITE', 'REMOTE', 'FIELD'] as WorkMode[]).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setSelectedWorkMode(mode)}
-                className={`mode-button ${selectedWorkMode === mode ? 'active' : ''}`}
-              >
-                {mode === 'ONSITE' ? '현장근무' : mode === 'REMOTE' ? '재택근무' : '외근'}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Location Selection for ONSITE */}
-      {!isClockedIn && selectedWorkMode === 'ONSITE' && (
+      {!isClockedIn && todaySchedule.work_mode === 'ONSITE' && (
         <div className="form-group">
           <label>근무지</label>
           <select
@@ -192,7 +210,7 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
       )}
 
       {/* Location Status */}
-      {selectedWorkMode === 'ONSITE' && (
+      {todaySchedule.work_mode === 'ONSITE' && (
         <div className="location-status">
           {locationError ? (
             <div className="location-error">
@@ -235,7 +253,7 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
             onClick={() => clockInMutation.mutate()}
             disabled={
               isLoading ||
-              (selectedWorkMode === 'ONSITE' && (!location || !selectedLocation || !isWithinRange))
+              (todaySchedule.work_mode === 'ONSITE' && (!location || !selectedLocation || !isWithinRange))
             }
             className="btn-attendance clock-in"
           >
@@ -253,7 +271,7 @@ export function AttendanceCheck({ userId }: AttendanceCheckProps) {
       </div>
 
       {/* Helpful Info */}
-      {selectedWorkMode === 'ONSITE' && !isClockedIn && (
+      {todaySchedule.work_mode === 'ONSITE' && !isClockedIn && (
         <div className="help-box">
           <p><strong>💡 현장근무 출근 방법</strong></p>
           <p>

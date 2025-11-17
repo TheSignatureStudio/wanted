@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { AttendanceCheck } from '@/components/attendance-check';
 import { NotificationBanner } from '@/components/notification-banner';
 import { useQuery } from '@tanstack/react-query';
@@ -106,20 +107,20 @@ export default function DashboardPage() {
               <h3>바로가기</h3>
               
               <div className="quick-actions">
-                <button className="action-button">
+                <Link href="/remote" className="action-button">
                   <strong>재택 신청</strong>
                   <span>원격 근무 일정 등록</span>
-                </button>
+                </Link>
                 
-                <button className="action-button">
+                <Link href="/leave" className="action-button">
                   <strong>휴가 신청</strong>
                   <span>연차 사용 신청</span>
-                </button>
+                </Link>
                 
-                <button className="action-button">
+                <Link href="/reservations" className="action-button">
                   <strong>회의실 예약</strong>
                   <span>회의 공간 예약</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>

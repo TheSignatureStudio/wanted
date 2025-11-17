@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 type TabType = 'users' | 'teams' | 'resources' | 'locations';
 
@@ -14,6 +15,15 @@ export default function AdminPage() {
         <p className="page-description">
           시스템 설정 및 사용자 관리
         </p>
+      </div>
+
+      {/* Quick Access */}
+      <div className="admin-quick-access">
+        <Link href="/admin/schedules" className="quick-access-card">
+          <span className="quick-icon">📅</span>
+          <h3>근무 일정 관리</h3>
+          <p>직원별 근무 형태 및 시간 설정</p>
+        </Link>
       </div>
 
       <div className="admin-tabs">

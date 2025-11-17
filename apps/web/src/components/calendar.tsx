@@ -1,24 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+interface AttendanceRecord {
+  date: string;
+  clock_in: string;
+  clock_out: string;
+  total_hours: number;
+  work_mode: string;
+}
 
 interface CalendarDay {
   date: Date;
   isCurrentMonth: boolean;
   hours?: number;
   isToday: boolean;
+  workMode?: string;
 }
 
 interface CalendarProps {
-  userId: string;
+  year?: number;
+  month?: number;
+  attendanceData?: AttendanceRecord[];
+  isLoading?: boolean;
 }
 
-export function Calendar({ }: CalendarProps) {
+export function Calendar({ year: propYear, month: propMonth, attendanceData, isLoading }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'month' | 'week'>('month');
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const year = propYear || currentDate.getFullYear();
+  const month = (propMonth ? propMonth - 1 : currentDate.getMonth());
 
   // Generate calendar days
   const firstDayOfMonth = new Date(year, month, 1);
@@ -28,6 +40,12 @@ export function Calendar({ }: CalendarProps) {
   const days: CalendarDay[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  // Create a map of attendance data by date
+  const attendanceMap = new Map<string, AttendanceRecord>();
+  attendanceData?.forEach((record) => {
+    attendanceMap.set(record.date, record);
+  });
 
   // Previous month days
   const prevMonthLastDay = new Date(year, month, 0).getDate();
@@ -43,10 +61,14 @@ export function Calendar({ }: CalendarProps) {
   // Current month days
   for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
     const date = new Date(year, month, i);
+    const dateStr = date.toISOString().split('T')[0];
+    const attendance = attendanceMap.get(dateStr);
+    
     days.push({
       date,
       isCurrentMonth: true,
-      hours: Math.random() > 0.3 ? Math.floor(Math.random() * 10) + 4 : undefined, // Mock data
+      hours: attendance?.total_hours,
+      workMode: attendance?.work_mode,
       isToday: date.getTime() === today.getTime(),
     });
   }
@@ -74,7 +96,7 @@ export function Calendar({ }: CalendarProps) {
     setCurrentDate(new Date());
   };
 
-  const monthName = currentDate.toLocaleDateString('ko-KR', { 
+  const monthName = new Date(year, month).toLocaleDateString('ko-KR', { 
     year: 'numeric', 
     month: 'long' 
   });
@@ -121,16 +143,16 @@ export function Calendar({ }: CalendarProps) {
       <div className="calendar-stats">
         <div className="stat-item">
           <span className="stat-label">총 근무시간</span>
-          <span className="stat-value">{totalHours}h</span>
+          <span className="stat-value">{isLoading ? '...' : `${totalHours.toFixed(1)}h`}</span>
         </div>
         <div className="stat-item">
           <span className="stat-label">근무일수</span>
-          <span className="stat-value">{workingDays}일</span>
+          <span className="stat-value">{isLoading ? '...' : `${workingDays}일`}</span>
         </div>
         <div className="stat-item">
           <span className="stat-label">평균 근무시간</span>
           <span className="stat-value">
-            {workingDays > 0 ? (totalHours / workingDays).toFixed(1) : 0}h
+            {isLoading ? '...' : workingDays > 0 ? `${(totalHours / workingDays).toFixed(1)}h` : '0h'}
           </span>
         </div>
       </div>
@@ -149,11 +171,16 @@ export function Calendar({ }: CalendarProps) {
               key={index}
               className={`calendar-day ${!day.isCurrentMonth ? 'other-month' : ''} ${
                 day.isToday ? 'today' : ''
-              } ${day.hours ? 'has-hours' : ''}`}
+              } ${day.hours ? 'has-hours' : ''} ${day.workMode ? `mode-${day.workMode.toLowerCase()}` : ''}`}
             >
               <div className="day-number">{day.date.getDate()}</div>
               {day.hours && day.isCurrentMonth && (
-                <div className="day-hours">{day.hours}h</div>
+                <div className="day-hours">{day.hours.toFixed(1)}h</div>
+              )}
+              {day.workMode && day.isCurrentMonth && (
+                <div className="day-mode">
+                  {day.workMode === 'ONSITE' ? '🏢' : day.workMode === 'REMOTE' ? '🏡' : '🚗'}
+                </div>
               )}
             </div>
           ))}
@@ -162,4 +189,3 @@ export function Calendar({ }: CalendarProps) {
     </div>
   );
 }
-
