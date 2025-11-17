@@ -3,6 +3,7 @@ const NAV_ITEMS = [
   { href: "#features", label: "핵심 기능" },
   { href: "#timeline", label: "로드맵" },
   { href: "#resources", label: "문서" },
+  { href: "/dashboard", label: "대시보드" },
 ];
 
 const FEATURES = [
