@@ -9,4 +9,5 @@
 - npm 워크스페이스 + Turborepo 기반 모노레포 구조 설계 (`apps/*`, `packages/*`)
 - Next.js 웹 앱, Expo 모바일 앱, Cloudflare Worker(API) 스캐폴딩
 - 공통 `tsconfig.base.json`, `turbo.json` 구성 및 CSS 가이드에 맞춘 홈 화면 디자인
+- 웹 홈 화면 내비게이션/로드맵/리소스 섹션 확장 및 접근성(스킵 링크, ARIA) 반영
 
