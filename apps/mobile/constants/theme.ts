@@ -5,27 +5,47 @@
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const brand = {
+  accent: '#7c5dff',
+  accentStrong: '#a181ff',
+  bgDark: '#050816',
+  bgLight: '#f6f6f8',
+  panelDark: '#11142b',
+  panelLight: '#ffffff',
+  textDark: '#f4f4f5',
+  textLight: '#12121a',
+  mutedDark: '#a6a8c3',
+  mutedLight: '#4d5060',
+  borderDark: 'rgba(255, 255, 255, 0.12)',
+  borderLight: 'rgba(5, 8, 22, 0.12)',
+};
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text: brand.textLight,
+    background: brand.bgLight,
+    tint: brand.accent,
+    icon: brand.mutedLight,
+    tabIconDefault: '#9ea0a8',
+    tabIconSelected: brand.accent,
+    card: brand.panelLight,
+    muted: brand.mutedLight,
+    border: brand.borderLight,
+    accentStrong: brand.accentStrong,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: brand.textDark,
+    background: brand.bgDark,
+    tint: brand.accent,
+    icon: brand.mutedDark,
+    tabIconDefault: brand.mutedDark,
+    tabIconSelected: brand.accent,
+    card: brand.panelDark,
+    muted: brand.mutedDark,
+    border: brand.borderDark,
+    accentStrong: brand.accentStrong,
   },
-};
+} as const;
 
 export const Fonts = Platform.select({
   ios: {

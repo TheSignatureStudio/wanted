@@ -17,6 +17,7 @@
 - 단일 CSS 전략을 반영한 웹 홈 화면 메시지 업데이트
 - 접근성 요소(스킵 링크, ARIA)와 로드맵/리소스 섹션을 포함한 UX 확장
 - Cloudflare Worker 라우팅(`health`, `rooms`, `work-locations`, `remote-schedules`) 및 D1 스키마 초안
+- Expo 앱 홈/가이드 탭을 브랜드 톤으로 개편하고 모바일 플레이북 정리
 
 ## 문서
 

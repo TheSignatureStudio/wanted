@@ -1,5 +1,4 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Collapsible } from '@/components/ui/collapsible';
 import { ExternalLink } from '@/components/external-link';
@@ -7,106 +6,129 @@ import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+import { Colors, Fonts } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+
+const PLAYBOOK = [
+  {
+    title: 'GPS & 지오펜스',
+    body: '모바일에서 위치 권한을 받은 뒤, 허용 반경 내 진입 시에만 출근 로그를 생성합니다. QA 환경에서는 mock 좌표를 제공하세요.',
+  },
+  {
+    title: '재택 신청 흐름',
+    body: '사용자가 날짜를 지정하면 승인자에게 푸시/슬랙 알림을 발송하고, 승인된 일정은 GPS 검증을 우회합니다.',
+  },
+  {
+    title: '회의실 · Zoom 예약',
+    body: 'Cloudflare Worker가 Zoom API 토큰을 저장하고, 예약 시 자동으로 회의 링크와 자원 점유 상태를 기록합니다.',
+  },
+  {
+    title: '52시간 가드레일',
+    body: '주차별 합산 시간을 D1 `weekly_summaries` 테이블에 저장하고, 초과 시 관리자 승인이 필요하도록 모바일에서 표시합니다.',
+  },
+];
+
+const RESOURCE_LINKS = [
+  {
+    label: '요구사항 & 아키텍처',
+    href: 'https://github.com/TheSignatureStudio/wanted/blob/main/docs/requirements.md',
+  },
+  {
+    label: '진행 로그',
+    href: 'https://github.com/TheSignatureStudio/wanted/blob/main/docs/progress.md',
+  },
+  {
+    label: 'Cloudflare Worker 코드',
+    href: 'https://github.com/TheSignatureStudio/wanted/tree/main/apps/worker',
+  },
+];
 
 export default function TabTwoScreen() {
+  const colorScheme = useColorScheme() ?? 'light';
+  const palette = Colors[colorScheme];
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerBackgroundColor={{ light: '#e2e1ff', dark: '#1f1f2b' }}
       headerImage={
         <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
+          size={300}
+          color={palette.accentStrong}
+          name="sparkles"
           style={styles.headerImage}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
+      <ThemedView style={styles.hero}>
         <ThemedText
           type="title"
           style={{
             fontFamily: Fonts.rounded,
+            lineHeight: 38,
           }}>
-          Explore
+          운영 가이드
+        </ThemedText>
+        <ThemedText style={styles.heroText}>
+          QA 체크리스트와 운영 정책을 한눈에 확인하고, 자세한 문서는 GitHub에 정리했습니다.
         </ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
+
+      <View style={styles.playbook}>
+        {PLAYBOOK.map((item) => (
+          <Collapsible key={item.title} title={item.title}>
+            <ThemedText style={styles.playbookText}>{item.body}</ThemedText>
+          </Collapsible>
+        ))}
+      </View>
+
+      <View style={styles.resources}>
+        <ThemedText type="subtitle">참고 링크</ThemedText>
+        <ThemedText style={styles.resourcesCaption}>
+          Cloudflare, Expo, 근태 정책 문서를 이어서 읽어보세요.
         </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
+        {RESOURCE_LINKS.map((link) => (
+          <ExternalLink key={link.label} href={link.href} style={styles.resourceLink}>
+            <ThemedText type="link">{link.label}</ThemedText>
+          </ExternalLink>
+        ))}
+      </View>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
+    bottom: -120,
+    left: -20,
     position: 'absolute',
+    opacity: 0.2,
   },
-  titleContainer: {
-    flexDirection: 'row',
+  hero: {
     gap: 8,
+    marginBottom: 16,
+  },
+  heroText: {
+    fontSize: 15,
+    lineHeight: 24,
+    opacity: 0.85,
+  },
+  playbook: {
+    gap: 18,
+  },
+  playbookText: {
+    lineHeight: 22,
+    fontSize: 15,
+    opacity: 0.85,
+  },
+  resources: {
+    marginTop: 32,
+    gap: 8,
+  },
+  resourcesCaption: {
+    fontSize: 14,
+    opacity: 0.8,
+    marginBottom: 12,
+  },
+  resourceLink: {
+    paddingVertical: 6,
   },
 });
