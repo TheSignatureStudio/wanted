@@ -1,134 +1,295 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { theme } from '@/constants/theme';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors, Fonts } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+interface MenuItem {
+  icon: string;
+  title: string;
+  subtitle: string;
+  onPress?: () => void;
+}
 
-const PLAYBOOK = [
-  {
-    title: 'GPS & 지오펜스',
-    body: '모바일에서 위치 권한을 받은 뒤, 허용 반경 내 진입 시에만 출근 로그를 생성합니다. QA 환경에서는 mock 좌표를 제공하세요.',
-  },
-  {
-    title: '재택 신청 흐름',
-    body: '사용자가 날짜를 지정하면 승인자에게 푸시/슬랙 알림을 발송하고, 승인된 일정은 GPS 검증을 우회합니다.',
-  },
-  {
-    title: '회의실 · Zoom 예약',
-    body: 'Cloudflare Worker가 Zoom API 토큰을 저장하고, 예약 시 자동으로 회의 링크와 자원 점유 상태를 기록합니다.',
-  },
-  {
-    title: '52시간 가드레일',
-    body: '주차별 합산 시간을 D1 `weekly_summaries` 테이블에 저장하고, 초과 시 관리자 승인이 필요하도록 모바일에서 표시합니다.',
-  },
-];
+export default function ExploreScreen() {
+  const menuItems: MenuItem[] = [
+    {
+      icon: '📅',
+      title: '캘린더',
+      subtitle: '월별 근무 시간 확인',
+    },
+    {
+      icon: '🏡',
+      title: '재택근무 신청',
+      subtitle: '원격 근무 일정 등록',
+    },
+    {
+      icon: '🌴',
+      title: '휴가 신청',
+      subtitle: '연차 및 휴가 관리',
+    },
+    {
+      icon: '🏢',
+      title: '회의실 예약',
+      subtitle: '회의 공간 및 Zoom 예약',
+    },
+    {
+      icon: '📊',
+      title: '근무 통계',
+      subtitle: '주간/월간 근무 시간',
+    },
+    {
+      icon: '⚙️',
+      title: '설정',
+      subtitle: '알림 및 계정 설정',
+    },
+  ];
 
-const RESOURCE_LINKS = [
-  {
-    label: '요구사항 & 아키텍처',
-    href: 'https://github.com/TheSignatureStudio/wanted/blob/main/docs/requirements.md',
-  },
-  {
-    label: '진행 로그',
-    href: 'https://github.com/TheSignatureStudio/wanted/blob/main/docs/progress.md',
-  },
-  {
-    label: 'Cloudflare Worker 코드',
-    href: 'https://github.com/TheSignatureStudio/wanted/tree/main/apps/worker',
-  },
-];
-
-export default function TabTwoScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
-  const palette = Colors[colorScheme];
+  const handleGithub = () => {
+    Linking.openURL('https://github.com/TheSignatureStudio/wanted');
+  };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#e2e1ff', dark: '#1f1f2b' }}
-      headerImage={
-        <IconSymbol
-          size={300}
-          color={palette.accentStrong}
-          name="sparkles"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.hero}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-            lineHeight: 38,
-          }}>
-          운영 가이드
-        </ThemedText>
-        <ThemedText style={styles.heroText}>
-          QA 체크리스트와 운영 정책을 한눈에 확인하고, 자세한 문서는 GitHub에 정리했습니다.
-        </ThemedText>
-      </ThemedView>
+    <ScrollView style={styles.container}>
+      <View style={styles.content}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>더보기</Text>
+          <Text style={styles.subtitle}>다양한 기능을 이용해보세요</Text>
+        </View>
 
-      <View style={styles.playbook}>
-        {PLAYBOOK.map((item) => (
-          <Collapsible key={item.title} title={item.title}>
-            <ThemedText style={styles.playbookText}>{item.body}</ThemedText>
-          </Collapsible>
-        ))}
-      </View>
+        {/* Profile Card */}
+        <View style={styles.profileCard}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>👤</Text>
+          </View>
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>데모 사용자</Text>
+            <Text style={styles.profileEmail}>demo@wanted.com</Text>
+          </View>
+        </View>
 
-      <View style={styles.resources}>
-        <ThemedText type="subtitle">참고 링크</ThemedText>
-        <ThemedText style={styles.resourcesCaption}>
-          Cloudflare, Expo, 근태 정책 문서를 이어서 읽어보세요.
-        </ThemedText>
-        {RESOURCE_LINKS.map((link) => (
-          <ExternalLink key={link.label} href={link.href} style={styles.resourceLink}>
-            <ThemedText type="link">{link.label}</ThemedText>
-          </ExternalLink>
-        ))}
+        {/* Menu Items */}
+        <View style={styles.menuSection}>
+          <Text style={styles.sectionTitle}>기능</Text>
+          {menuItems.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.menuItem}
+              onPress={item.onPress}
+            >
+              <Text style={styles.menuIcon}>{item.icon}</Text>
+              <View style={styles.menuContent}>
+                <Text style={styles.menuTitle}>{item.title}</Text>
+                <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
+              </View>
+              <Text style={styles.menuArrow}>›</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Info Section */}
+        <View style={styles.infoSection}>
+          <Text style={styles.sectionTitle}>정보</Text>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoTitle}>Wanted Attendance</Text>
+            <Text style={styles.infoText}>Version 1.0.0</Text>
+            <Text style={styles.infoText}>GPS 기반 스마트 출퇴근 관리</Text>
+            <TouchableOpacity onPress={handleGithub} style={styles.linkButton}>
+              <Text style={styles.linkText}>GitHub에서 보기 →</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Features */}
+        <View style={styles.featuresSection}>
+          <Text style={styles.sectionTitle}>주요 기능</Text>
+          <View style={styles.featureCard}>
+            <Text style={styles.featureIcon}>📍</Text>
+            <Text style={styles.featureTitle}>GPS 기반 출퇴근</Text>
+            <Text style={styles.featureText}>
+              지정된 위치에서만 출퇴근이 가능합니다
+            </Text>
+          </View>
+          <View style={styles.featureCard}>
+            <Text style={styles.featureIcon}>🏡</Text>
+            <Text style={styles.featureTitle}>재택근무 지원</Text>
+            <Text style={styles.featureText}>
+              관리자 승인을 통한 원격 근무 관리
+            </Text>
+          </View>
+          <View style={styles.featureCard}>
+            <Text style={styles.featureIcon}>⏰</Text>
+            <Text style={styles.featureTitle}>52시간 근무제</Text>
+            <Text style={styles.featureText}>
+              주 52시간을 초과하지 않도록 자동 체크
+            </Text>
+          </View>
+          <View style={styles.featureCard}>
+            <Text style={styles.featureIcon}>📅</Text>
+            <Text style={styles.featureTitle}>휴가 관리</Text>
+            <Text style={styles.featureText}>
+              연차 및 휴가 신청과 잔여일수 확인
+            </Text>
+          </View>
+        </View>
       </View>
-    </ParallaxScrollView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    bottom: -120,
-    left: -20,
-    position: 'absolute',
-    opacity: 0.2,
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
   },
-  hero: {
-    gap: 8,
-    marginBottom: 16,
+  content: {
+    padding: 20,
+    paddingTop: 60,
   },
-  heroText: {
-    fontSize: 15,
-    lineHeight: 24,
-    opacity: 0.85,
+  header: {
+    marginBottom: 24,
   },
-  playbook: {
-    gap: 18,
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: theme.colors.text,
+    marginBottom: 4,
   },
-  playbookText: {
-    lineHeight: 22,
-    fontSize: 15,
-    opacity: 0.85,
+  subtitle: {
+    fontSize: 16,
+    color: theme.colors.subtext,
   },
-  resources: {
-    marginTop: 32,
-    gap: 8,
+  profileCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.colors.panel,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.panelBorder,
   },
-  resourcesCaption: {
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: theme.colors.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  avatarText: {
+    fontSize: 28,
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  profileName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: theme.colors.text,
+    marginBottom: 4,
+  },
+  profileEmail: {
     fontSize: 14,
-    opacity: 0.8,
+    color: theme.colors.subtext,
+  },
+  menuSection: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: theme.colors.text,
     marginBottom: 12,
   },
-  resourceLink: {
-    paddingVertical: 6,
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.colors.panel,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.panelBorder,
+  },
+  menuIcon: {
+    fontSize: 24,
+    marginRight: 16,
+  },
+  menuContent: {
+    flex: 1,
+  },
+  menuTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: theme.colors.text,
+    marginBottom: 2,
+  },
+  menuSubtitle: {
+    fontSize: 13,
+    color: theme.colors.subtext,
+  },
+  menuArrow: {
+    fontSize: 24,
+    color: theme.colors.subtext,
+  },
+  infoSection: {
+    marginBottom: 24,
+  },
+  infoCard: {
+    backgroundColor: theme.colors.panel,
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: theme.colors.panelBorder,
+    alignItems: 'center',
+  },
+  infoTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: theme.colors.text,
+    marginBottom: 8,
+  },
+  infoText: {
+    fontSize: 14,
+    color: theme.colors.subtext,
+    marginBottom: 4,
+  },
+  linkButton: {
+    marginTop: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(124, 93, 255, 0.1)',
+    borderRadius: 8,
+  },
+  linkText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: theme.colors.accent,
+  },
+  featuresSection: {
+    marginBottom: 24,
+  },
+  featureCard: {
+    backgroundColor: theme.colors.panel,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.panelBorder,
+  },
+  featureIcon: {
+    fontSize: 28,
+    marginBottom: 8,
+  },
+  featureTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: theme.colors.text,
+    marginBottom: 4,
+  },
+  featureText: {
+    fontSize: 14,
+    color: theme.colors.subtext,
+    lineHeight: 20,
   },
 });
