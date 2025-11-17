@@ -10,6 +10,15 @@ import { listTeams, getTeam, createTeam, updateTeam, deleteTeam } from './teams'
 // Attendance routes
 import { listAttendance, getAttendance, clockIn, clockOut, getWeeklySummary } from './attendance';
 
+// Remote schedules routes
+import { registerRemoteRoutes } from './remoteSchedules';
+
+// Resources and reservations routes
+import { registerRoomRoutes } from './rooms';
+
+// Leave routes
+import { registerLeaveRoutes } from './leaves';
+
 export function registerRoutes(router: Router) {
   // Health check
   router.get('/api/health', health);
@@ -34,4 +43,9 @@ export function registerRoutes(router: Router) {
   router.post('/api/attendance/clock-in', clockIn);
   router.post('/api/attendance/clock-out', clockOut);
   router.get('/api/attendance/summary/:userId', (req, env, ctx, params) => getWeeklySummary(req, env, ctx, params));
+
+  // Register modular routes
+  registerRemoteRoutes(router);
+  registerRoomRoutes(router);
+  registerLeaveRoutes(router);
 }
