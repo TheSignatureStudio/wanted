@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 
 type TabType = 'users' | 'teams' | 'resources' | 'locations';
 

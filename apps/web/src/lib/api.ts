@@ -3,7 +3,6 @@ import type {
   Team,
   AttendanceLog,
   WeeklySummary,
-  WorkLocation,
   ClockInRequest,
   ClockOutRequest,
 } from './types';

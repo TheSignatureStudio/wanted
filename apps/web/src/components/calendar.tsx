@@ -13,7 +13,7 @@ interface CalendarProps {
   userId: string;
 }
 
-export function Calendar({ userId }: CalendarProps) {
+export function Calendar({ }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'month' | 'week'>('month');
 

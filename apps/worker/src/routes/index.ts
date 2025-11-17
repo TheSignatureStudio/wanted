@@ -19,6 +19,9 @@ import { registerRoomRoutes } from './rooms';
 // Leave routes
 import { registerLeaveRoutes } from './leaves';
 
+// Notification routes
+import { registerNotificationRoutes } from './notifications';
+
 export function registerRoutes(router: Router) {
   // Health check
   router.get('/api/health', health);
@@ -48,4 +51,5 @@ export function registerRoutes(router: Router) {
   registerRemoteRoutes(router);
   registerRoomRoutes(router);
   registerLeaveRoutes(router);
+  registerNotificationRoutes(router);
 }

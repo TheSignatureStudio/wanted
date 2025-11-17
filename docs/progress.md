@@ -18,12 +18,20 @@
   - attendance_logs, weekly_summaries
   - remote_schedules, resources, reservations
   - leave_balances, leave_requests
-- ✅ Worker API 엔드포인트 구현
+- ✅ Worker API 엔드포인트 전체 구현
   - Users CRUD API
   - Teams CRUD API
   - Attendance API (clock-in/out, GPS 검증, 주간 요약)
+  - Remote Schedules API (재택근무 일정 관리)
+  - Resources & Reservations API (회의실/Zoom 예약)
+  - Leave Management API (휴가 관리 및 승인)
+  - Notifications API (52시간 알림, 휴가 알림, 승인 대기)
 - ✅ GPS 기반 위치 검증 로직
 - ✅ 주 52시간 자동 집계 시스템
+- ✅ 재택근무 승인 워크플로우
+- ✅ 회의실 중복 예약 방지 로직
+- ✅ 휴가 잔여일수 자동 계산 (영업일 기준)
+- ✅ 52시간 근무 알림 시스템 (warning/critical/exceeded)
 
 #### 3. 웹 프론트엔드
 - ✅ React Query 및 상태 관리 설정
@@ -37,13 +45,28 @@
   - 주간 근무시간 통계
   - 52시간 초과 경고
   - 빠른 액션 버튼
+- ✅ 월별 근무시간 캘린더 뷰
+  - 일별 근무시간 표시
+  - 월간 통계 (총 근무시간, 근무일수, 평균)
+  - 월/주 뷰 전환
+- ✅ 관리자 대시보드
+  - 사용자 관리 테이블
+  - 팀 관리 카드
+  - 회의실/자원 관리
+  - 근무 위치 관리
+- ✅ 알림 배너 컴포넌트
+  - 52시간 경고 알림
+  - 휴가 잔여일 알림
+  - 자동 슬라이드 애니메이션
 
 #### 4. 배포 및 문서화
 - ✅ Cloudflare Pages 배포 설정
 - ✅ Next.js 16 → 15.1.2 다운그레이드 (호환성)
+- ✅ ESLint flat config 설정
 - ✅ `nodejs_compat` 플래그 설정
-- ✅ API 문서 작성
+- ✅ 전체 API 문서 작성
 - ✅ 요구사항 문서 작성
+- ✅ 배포 가이드 작성
 
 ### 현재 상태
 
