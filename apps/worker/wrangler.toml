@@ -7,6 +7,6 @@ APP_VERSION = "0.1.0"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "wanted_attendance"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_name = "wanted-attendance-db"
+database_id = "c9fda4da-a682-45ff-9274-76b724351c88"
 
