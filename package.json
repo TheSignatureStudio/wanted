@@ -1,0 +1,36 @@
+{
+  "name": "@wanted/root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wanted Attendance Suite 모노레포",
+  "packageManager": "npm@10.9.0",
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace @wanted/web",
+    "build:web": "npm run build --workspace @wanted/web",
+    "dev:mobile": "npm run start --workspace @wanted/mobile",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "build": "turbo build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheSignatureStudio/wanted.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheSignatureStudio/wanted/issues"
+  },
+  "homepage": "https://github.com/TheSignatureStudio/wanted#readme",
+  "devDependencies": {
+    "turbo": "^2.6.1"
+  }
+}

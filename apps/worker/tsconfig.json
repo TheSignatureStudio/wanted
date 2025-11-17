@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types"],
+    "noEmit": false,
+    "outDir": "dist"
+  },
+  "include": ["src/**/*", "wrangler.toml"]
+}
+

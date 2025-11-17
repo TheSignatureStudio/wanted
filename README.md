@@ -12,10 +12,38 @@
 
 ## 오늘의 진행 상황
 
-프로젝트 초기화를 위해 Git 저장소를 구성하고 기본 문서·.gitignore를 추가했습니다. 상세 요구사항과 아키텍처 정의는 `docs/` 폴더를 참고하세요.
+- npm 워크스페이스 + Turborepo 기반 모노레포 구성
+- Next.js(App Router) 웹 앱, Expo 기반 모바일 앱, Cloudflare Worker(API) 스캐폴딩
+- 단일 CSS 전략을 반영한 웹 홈 화면 메시지 업데이트
 
 ## 문서
 
 - `docs/requirements.md`: 기능 요구사항, 사용자 역할, 규정 로직 요약
 - `docs/progress.md`: 작업 세션별 진행 로그
+
+## 모노레포 구성
+
+```
+apps/
+  web/      # Next.js 15 기반 Cloudflare Pages 타겟 웹
+  mobile/   # Expo 관리형 앱 (iOS/Android/Web)
+  worker/   # Cloudflare Worker + D1 API
+docs/        # 요구사항 및 진행 로그
+```
+
+## 사용 방법
+
+```bash
+# 의존성 설치
+npm install
+
+# 웹 개발 서버
+npm run dev:web
+
+# 모바일 앱(Expo)
+npm run dev:mobile
+
+# Cloudflare Worker 로컬
+npm run dev --workspace @wanted/worker
+```
 
