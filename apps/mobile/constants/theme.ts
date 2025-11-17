@@ -71,3 +71,16 @@ export const Fonts = Platform.select({
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });
+
+// Theme object for use in components
+export const theme = {
+  colors: {
+    background: brand.bgDark,
+    panel: brand.panelDark,
+    panelBorder: brand.borderDark,
+    text: brand.textDark,
+    subtext: brand.mutedDark,
+    accent: brand.accent,
+    accentStrong: brand.accentStrong,
+  },
+};
